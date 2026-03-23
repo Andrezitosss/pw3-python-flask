@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Games</title>
-</head>
-<body>
-    <h1>Jogos em Destaque!</h1>
-    <h3>Seu site favorito de jogos!</h3>
-    <hr>
-</body>
-</html>
+{% extends 'base.html %'}
+
+{% block content %}
+
+<h1>Jogos em Destaque!</h1>
+<h3>Seu site favorito de jogos!</h3>
+<hr>
+<p><a href="games.html">Games</a></p>
+<p><a href="consoles.html">Consoles</a></p>
+
+{% endblock content %}
