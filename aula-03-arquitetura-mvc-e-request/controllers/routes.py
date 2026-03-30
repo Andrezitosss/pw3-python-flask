@@ -1,6 +1,7 @@
-from flask import render_template
+from flask import render_template,request,redirect,url_for
 
 def init_app(app):
+    listaGames = [{"titulo": "CS-GO","ano" :2012, "Categoria" : "FPS Online"}]
 
     @app.route('/')
     def home():
@@ -12,7 +13,7 @@ def init_app(app):
         ano = 2025
         categoria = "Metroid Van"
         
-        game = {
+        games = {
             "titulo": "minecraft",
             "ano": 2012,
             "categoria": "Sandbox"
@@ -25,7 +26,7 @@ def init_app(app):
                                ano=ano,
                                categoria=categoria,
                                jogadores=jogadores,
-                               game=game)
+                               games=games)
 
     @app.route('/consoles')
     def consoles():
@@ -39,3 +40,12 @@ def init_app(app):
                                ano=ano,
                                categoria=categoria,
                                jogadores=jogadores)
+        
+        #ROTA DE CADASTRO DE JOGOS
+    @app.route('/cadgames', methods=['GET', 'POST'])
+    def cadgames():
+        if request.method == 'POST' : 
+            listaGames.append({'titulo' : request.form.get('titulo'),'ano' : request.form.get('ano'), 'categoria' : request.form.get('categoria')})
+            return redirect(url_for('cadgames'))
+        return render_template('cadgames.html',
+                               listaGames=listaGames)
