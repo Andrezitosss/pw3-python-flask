@@ -49,3 +49,4 @@ def init_app(app):
             return redirect(url_for('cadgames'))
         return render_template('cadgames.html',
                                listaGames=listaGames)
+        
