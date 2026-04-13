@@ -1,58 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+    <title>Comentários</title>
+
     <style>
-         body {
+        body {
             font-family: 'montserrat';
-          background-color: black;
-          background-size: cover;        
-          background-position: center;   
-          background-repeat: no-repeat;                  
-          }   
-          h1{
-            color: aliceblue;
-          }
-            h2{
-            color: aliceblue;
-          }
+            background-color: black;
+            color: white;
+        }
 
-            h3{
-            color: aliceblue;
-          }
+        input {
+            display: block;
+            margin-bottom: 10px;
+            padding: 6px;
+            width: 300px;
+        }
 
-            label{
-            color: aliceblue;
-          }
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
 
+        th, td {
+            border: 1px solid white;
+            padding: 8px;
+        }
     </style>
+</head>
+
 <body>
 
-    <h1>Deixe aqui seu comentário!</h1>
-    <form>
-    
+<h1>Deixe aqui seu comentário!</h1>
+
+<form action="{{ url_for('formulario') }}" method="POST">
+
     <label>Sobre qual jogo você irá falar?</label>
-    <input type="text">
+    <input type="text" name="jogo" required>
 
-    <br><br>
+    <label>Email:</label>
+    <input type="email" name="email" required>
 
-    <label>Qual é o seu email?</label>
-    <input type="email">
-            <br><br>
+    <label>Nome:</label>
+    <input type="text" name="nome" required>
 
-    <label>Qual é o seu nome?</label>
-    <input type="name">
-        <br><br>
-    <label>Escreva seu comentário.</label>
-    <input>
-
-    <br><br>
+    <label>Comentário:</label>
+    <input type="text" name="comentario" required>
 
     <input type="submit" value="Enviar">
+    <input type="reset" value="Limpar">
 
 </form>
+
+<hr>
+
+<h1>Comentários</h1>
+
+<table>
+    {% for c in listaComentarios %}
+    <tr>
+        <td>
+            {{ c.jogo }} <br>
+            {{ c.nome }}: {{ c.comentario }}
+            <hr>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
 </body>
 </html>
