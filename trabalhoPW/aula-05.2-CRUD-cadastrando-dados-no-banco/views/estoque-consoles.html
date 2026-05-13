@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<details>
+    <summary>Cadastrar um novo console</summary>
+    <div class="col-md-4">
+        <form action="{{url_for('estoque_jogos')}}" method="POST">
+            <input type="text" name="nome" placeholder="Nome do console" class="form-control" required/>
+            <input type="text" name="fabricante" placeholder="Fabricante do console" class="form-control" required/>
+            <input type="text" name="ano" placeholder="Ano do console" class="form-control" required/>
+            <input type="text" name="preco" placeholder="Preço do console" class="form-control" required/>
+            <input type="text" name="quantidade" placeholder="Quantidade do console" class="form-control" required/>
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+            <input type="reset" value="Limpar" class="btn btn-danger"/>
+        </form>
+    </div>
+</details>
+
+<h2>Controle de estoque</h2>
+
+<table class="table table-bordered table-hover">
+    <thread class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Fabricante</th>
+            <th>Ano</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+            <th colspan="2">Ações</th>
+        </tr>
+    </thread>
+
+    <tbody>
+        {% for console in consoles %}
+        <tr>
+            <td>{{console.id}}</td>
+            <td>{{console.nome}}</td>
+            <td>{{console.fabricante}}</td>
+            <td>{{console.ano}}</td>
+            <td>{{console.preco}}</td>
+            <td>{{console.quantidade}}</td>
+
+            <td>
+                <a href="" class="btn btn-warning">Editar</a>
+            </td>
+
+            <td>
+                <a href="{{url_for('estoque_jogos', id=console.id)}}" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja deletar este console?');">Deletar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock content %}
