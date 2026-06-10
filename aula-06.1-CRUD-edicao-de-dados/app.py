@@ -14,7 +14,7 @@ DB_NAME = 'thegames'
 app.config['DATABASE_NAME'] = DB_NAME
 #passando o endereço do banco de dados para o flask
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql://root:@localhost/{DB_NAME}'
-
+app.config['SECRET_KEY'] = 'meusegredo'
 
 # Iniciando o servidor web
 if __name__ == '__main__':

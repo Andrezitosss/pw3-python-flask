@@ -20,3 +20,13 @@ def __init__(self, titulo, ano, categoria, plataforma, preco, quantidade):
     self.plataforma = plataforma
     self.preco = preco
     self.quantidade = quantidade    
+    
+class Usuario(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(80), unique=True, nullable=False)
+    senha = db.Column(db.String(150), nullable=False)
+    
+    def __init__(self, email, senha):
+        self.email = email
+        self.senha = senha

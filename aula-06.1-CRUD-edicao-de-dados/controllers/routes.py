@@ -1,7 +1,9 @@
-from flask import render_template,request,redirect,url_for
+from flask import render_template,request,redirect,url_for, flash
 
 
-from models.database import Game, db
+from models.database import Game, db, Usuario
+from werkzeug.security import generate_password_hash
+from markupsafe import Markup
 
 def init_app(app):
     listaGames = [{"titulo": "CS-GO","ano" :2012, "Categoria" : "FPS Online"}]
@@ -97,3 +99,27 @@ def init_app(app):
             db.session.commit()
             return redirect(url_for('estoque_jogos'))
         return render_template('editar-jogos.html', game=game)
+
+    @app.route('/cadastro', methods=['GET', 'POST'])
+    def cadastro():
+        if request.method == 'POST':
+
+            email = request.form['email']
+            senha = request.form['senha']
+            usuario = Usuario.query.filter_by(email=email).first()
+            if usuario:
+                msg = Markup(f"O email {email} já está cadastrado. <a href='/login'>Faça login</a>.")
+                flash(msg, 'danger')
+                return redirect(url_for('cadastro'))
+            senha_criptografada = generate_password_hash(senha, method='scrypt')
+            novo_usuario = Usuario(email=email, senha=senha_criptografada)
+            db.session.add(novo_usuario)
+            db.session.commit()
+            msgCad = Markup(f"Usuário {email} cadastrado com sucesso! <a href='/login'>Faça login</a>.")
+            flash(msgCad, 'success')
+            return redirect(url_for('login'))
+        return render_template('cadastro.html')
+
+    @app.route('/login', methods=['GET', 'POST'])
+    def login():
+        return render_template('login.html')
