@@ -1,8 +1,8 @@
-from flask import render_template,request,redirect,url_for, flash
+from flask import render_template,request,redirect,url_for, flash, session
 
 
 from models.database import Game, db, Usuario
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from markupsafe import Markup
 
 def init_app(app):
@@ -122,4 +122,16 @@ def init_app(app):
 
     @app.route('/login', methods=['GET', 'POST'])
     def login():
+        if request.method == 'POST':
+            email = request.form['email']
+            senha = request.form['senha']
+            usuario = Usuario.query.filter_by(email=email).first()
+            if usuario and check_password_hash(usuario.senha, senha):
+                session['usuario_id'] = usuario.id
+                session['usuario_email'] = usuario.email
+                flash('Login bem-sucedido!', 'success')
+                return redirect(url_for('home'))
+            else:
+                flash('Email ou senha incorretos.', 'danger')
+                return redirect(url_for('login'))
         return render_template('login.html')

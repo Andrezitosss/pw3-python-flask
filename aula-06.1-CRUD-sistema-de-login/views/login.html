@@ -2,6 +2,17 @@
 
 {% block content %}
 
+{% extends 'base.html' %}
+{% block content %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+{% endfor %}
+{% endwith %}
 <div class="container col-4">
     <div class="card mt-4">
         <div class="card-body m-auto">
@@ -20,3 +31,5 @@
 
         </div>
     </div>
+
+    {% endblock content %}
