@@ -9,6 +9,13 @@
 </div>
 {% endfor %}
 {% endwith %}
+<div class="row">
+{% for imagem in imagens %}
+        <div class="col-md-3 m-auto">
+        <img src="/static/uploads/{{imagem.filename}}" class="img-thumbnail">
+    </div>
+{% endfor %}
+</div>
 <div class="container col-6">
     <div class="card mt-4">
         <div class="card-body">

@@ -3,7 +3,7 @@ from flask import render_template, request, redirect, url_for, flash, session
 # Importando o MARKUPSAFE (permite incluir link nas flash messages)
 from markupsafe import Markup
 # Importando o Model de Games
-from models.database import Game, db, Usuario
+from models.database import Game, db, Usuario, Imagem
 # Importando WERKZEUG
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -243,21 +243,25 @@ def init_app(app):
     # ROTA DE UPLOAD (GALERIA DE FOTOS)
     @app.route('/galeria', methods = ['GET','POST'])
     def galeria():
+        imagens = Imagem.query.all()
         FILE_TYPES = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg']
         # FUNÇÃO PARA VALIDAR O TIPO DE ARQUIVO ENVIADO
         def arquivos_permitidos(filename):
            return '.' in filename and filename.rsplit('.', 1)[1].lower() in FILE_TYPES
 
         #RECEBENDO O ARQUIVO DO FORMULÁRIO
-        if request.method == 'POST'
+        if request.method == 'POST':
         #guardo o arquivo em uma variavel
-         file = request.files['file']
+            file = request.files['file']
 
-        if not arquivos_permitidos(file.filename)
-            flash("Arquivo não permitido! Envie somente arquivos de imagem.", 'danger')
-            return redirect(request.url)
-            filename = str(uuid.uuid4())
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-            flash("Imagem recebida com sucesso!",'sucess')
-            return redirect(url_for('galeria')'')
-        return render_template('galeria.html')
+            if not arquivos_permitidos(file.filename):
+                flash("Arquivo não permitido! Envie somente arquivos de imagem.", 'danger')
+                return redirect(request.url)
+                filename = str(uuid.uuid4())
+                imagem = Imagem(filename)
+                db.session.add(imagem)
+                db.session.commit()
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
+                flash("Imagem recebida com sucesso!",'sucess')
+                return redirect(url_for('galeria'))
+        return render_template('galeria.html', imagens=imagens)
